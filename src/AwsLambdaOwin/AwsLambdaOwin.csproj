@@ -18,6 +18,7 @@
     <PackageReference Include="Amazon.Lambda.Core" Version="1.0.0" />
     <PackageReference Include="Amazon.Lambda.Serialization.Json" Version="1.0.1" />
     <PackageReference Include="KatanaNetStandard" Version="3.0.1" />
+    <PackageReference Include="System.Text.Encodings.Web" Version="4.3.0" />
   </ItemGroup>
 
 </Project>
