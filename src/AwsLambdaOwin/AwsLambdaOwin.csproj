@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.3</TargetFramework>
+    <Authors>Damian Hickey</Authors>
+    <Version>0.1.0</Version>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Company />
+    <PackageProjectUrl>https://github.com/damianh/AwsLambdaOwin</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/damianh/AwsLambdaOwin/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageTags>AWS;Amazon;Lambda;owin</PackageTags>
+    <Description>Host OWIN application in lambda. This is not an on official Amazon package.</Description>
+    <RepositoryUrl>https://github.com/damianh/AwsLambdaOwin</RepositoryUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Amazon.Lambda.APIGatewayEvents" Version="1.0.2" />
+    <PackageReference Include="Amazon.Lambda.Core" Version="1.0.0" />
+    <PackageReference Include="Amazon.Lambda.Serialization.Json" Version="1.0.1" />
+    <PackageReference Include="KatanaNetStandard" Version="3.0.1" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26403.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AwsLambdaOwin", "AwsLambdaOwin\AwsLambdaOwin.csproj", "{75378493-E3F7-4C0E-9EE0-9DA7CD0C8A84}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AwsLambdaOwin.Tests", "AwsLambdaOwin.Tests\AwsLambdaOwin.Tests.csproj", "{73A01010-D321-41F5-AA31-87FFFE91EAA9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{75378493-E3F7-4C0E-9EE0-9DA7CD0C8A84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75378493-E3F7-4C0E-9EE0-9DA7CD0C8A84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75378493-E3F7-4C0E-9EE0-9DA7CD0C8A84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75378493-E3F7-4C0E-9EE0-9DA7CD0C8A84}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73A01010-D321-41F5-AA31-87FFFE91EAA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73A01010-D321-41F5-AA31-87FFFE91EAA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73A01010-D321-41F5-AA31-87FFFE91EAA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73A01010-D321-41F5-AA31-87FFFE91EAA9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
