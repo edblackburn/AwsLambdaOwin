@@ -5,8 +5,13 @@ var target          = Argument("target", "Default");
 var configuration   = Argument("configuration", "Release");
 var artifactsDir    = Directory("./artifacts");
 var solution        = "./src/AwsLambdaOwin.sln";
-var buildNumber     = string.IsNullOrWhiteSpace(EnvironmentVariable("BUILD_NUMBER")) ? "0" : EnvironmentVariable("BUILD_NUMBER");
+var buildNumber     = string.IsNullOrWhiteSpace(EnvironmentVariable("APPVEYOR_BUILD_NUMBER")) 
+                        ? "0" 
+                        : EnvironmentVariable("APPVEYOR_BUILD_NUMBER");
 var version         = FileReadText("version.txt");
+var commitSha       = string.IsNullOrWhiteSpace(EnvironmentVariable("APPVEYOR_REPO_COMMIT"))
+                        ? ""
+                        : EnvironmentVariable("APPVEYOR_REPO_COMMIT");
 
 Task("Clean")
     .Does(() =>
@@ -28,7 +33,8 @@ Task("Build")
 {
     var settings = new DotNetCoreBuildSettings
     {
-        ArgumentCustomization = args => args.Append("/p:Version=" + version + ";FileVersion=" + version),
+        ArgumentCustomization = args => 
+            args.Append("/p:Version=" + version + ";FileVersion=" + version + ";InformationalVersion=" + commitSha),
         Configuration = configuration
     };
 
