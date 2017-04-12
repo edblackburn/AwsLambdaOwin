@@ -6,6 +6,7 @@ var configuration   = Argument("configuration", "Release");
 var artifactsDir    = Directory("./artifacts");
 var solution        = "./src/AwsLambdaOwin.sln";
 var buildNumber     = string.IsNullOrWhiteSpace(EnvironmentVariable("BUILD_NUMBER")) ? "0" : EnvironmentVariable("BUILD_NUMBER");
+var version         = FileReadText("version.txt");
 
 Task("Clean")
     .Does(() =>
@@ -25,11 +26,13 @@ Task("Build")
     .IsDependentOn("RestorePackages")
     .Does(() =>
 {
-    MSBuild(solution, settings => settings
-        .SetConfiguration(configuration)
-        .SetVerbosity(Verbosity.Minimal)
-        .UseToolVersion(MSBuildToolVersion.VS2017)
-    );
+    var settings = new DotNetCoreBuildSettings
+    {
+        ArgumentCustomization = args => args.Append("/p:Version=" + version + ";FileVersion=" + version),
+        Configuration = configuration
+    };
+
+    DotNetCoreBuild(solution, settings);
 });
 
 Task("RunTests")
@@ -44,12 +47,15 @@ Task("RunTests")
         XUnit(dll, settings);
 });
 
-Task("NuGetPack")
+Task("Pack")
     .IsDependentOn("Build")
     .Does(() =>
 {
+    var packageVersion = version + "-ci" + buildNumber.PadLeft(5, '0');
+
     var settings = new DotNetCorePackSettings
     {
+        ArgumentCustomization = args => args.Append("/p:Version=" + packageVersion),
         Configuration = "Release",
         OutputDirectory = "./artifacts/",
         NoBuild = true,
@@ -59,6 +65,6 @@ Task("NuGetPack")
 
 Task("Default")
     .IsDependentOn("RunTests")
-    .IsDependentOn("NuGetPack");
+    .IsDependentOn("Pack");
 
 RunTarget(target);
