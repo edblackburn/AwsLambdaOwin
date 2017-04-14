@@ -9,6 +9,7 @@
     <PackageTags>AWS;Amazon;Lambda;owin</PackageTags>
     <Description>Host OWIN application in lambda.</Description>
     <RepositoryUrl>https://github.com/damianh/AwsLambdaOwin</RepositoryUrl>
+    <VersionSuffix>$(VersionSuffix)</VersionSuffix>
   </PropertyGroup>
 
   <ItemGroup>

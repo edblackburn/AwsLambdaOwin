@@ -57,13 +57,16 @@ Task("Pack")
     .IsDependentOn("Build")
     .Does(() =>
 {
-    var packageVersion = version + "-ci" + buildNumber.PadLeft(5, '0');
+    var packageVersion = "ci" + buildNumber.PadLeft(5, '0');
 
     var settings = new DotNetCorePackSettings
     {
-        ArgumentCustomization = args => args.Append("/p:Version=" + packageVersion),
+        ArgumentCustomization = args => args
+            .Append("--include-symbols")
+            .Append("--include-source"),
         Configuration = "Release",
         OutputDirectory = "./artifacts/",
+        VersionSuffix = packageVersion,
         NoBuild = true,
     };
     DotNetCorePack("./src/AwsLambdaOwin", settings);
