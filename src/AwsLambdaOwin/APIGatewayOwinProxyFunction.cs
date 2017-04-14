@@ -54,7 +54,7 @@
 
             await AppFunc(owinContext.Environment);
 
-            var response = MarshalResponse(owinContext.Response);
+            var response = MarshalResponse(owinContext.Response, lambdaContext.Logger);
 
             var responseStream = new MemoryStream();
             _serializer.Serialize(response, responseStream);
@@ -99,19 +99,23 @@
             owinContext.Response.Body = new MemoryStream();
         }
 
-        private APIGatewayProxyResponse MarshalResponse(IOwinResponse owinResponse)
+        private APIGatewayProxyResponse MarshalResponse(IOwinResponse owinResponse, ILambdaLogger lambdaContextLogger)
         {
             var response = new APIGatewayProxyResponse
             {
-                StatusCode = owinResponse.StatusCode,
+                StatusCode = owinResponse.StatusCode
             };
+            lambdaContextLogger.Log("Here1");
             using (var reader = new StreamReader(owinResponse.Body, Encoding.UTF8))
             {
                 response.Body = reader.ReadToEnd();
             }
 
+            lambdaContextLogger.Log("Here2");
+            
             foreach (var owinResponseHeader in owinResponse.Headers)
             {
+                lambdaContextLogger.Log("Here3");
                 if (owinResponseHeader.Value.Length == 1)
                 {
                     response.Headers[owinResponseHeader.Key] = owinResponseHeader.Value[0];
