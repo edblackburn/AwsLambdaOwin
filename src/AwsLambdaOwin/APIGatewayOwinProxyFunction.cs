@@ -1,5 +1,6 @@
 ﻿namespace AwsLambdaOwin
 {
+    using System.Collections.Generic;
     using System.IO;
     using System.Text;
     using System.Text.Encodings.Web;
@@ -47,7 +48,7 @@
             }
 
             var proxyRequest = _serializer.Deserialize<APIGatewayProxyRequest>(requestStream);
-            lambdaContext.Logger.Log($"Incoming {proxyRequest.HttpMethod} requests to {proxyRequest.Path}");
+            lambdaContext.Logger.LogLine($"Incoming {proxyRequest.HttpMethod} requests to {proxyRequest.Path}");
 
             var owinContext = new OwinContext();
             MarshalRequest(owinContext, proxyRequest);
@@ -105,17 +106,15 @@
             {
                 StatusCode = owinResponse.StatusCode
             };
-            lambdaContextLogger.Log("Here1");
             using (var reader = new StreamReader(owinResponse.Body, Encoding.UTF8))
             {
                 response.Body = reader.ReadToEnd();
             }
 
-            lambdaContextLogger.Log("Here2");
-            
+            response.Headers = new Dictionary<string, string>();
+
             foreach (var owinResponseHeader in owinResponse.Headers)
             {
-                lambdaContextLogger.Log("Here3");
                 if (owinResponseHeader.Value.Length == 1)
                 {
                     response.Headers[owinResponseHeader.Key] = owinResponseHeader.Value[0];
