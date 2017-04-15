@@ -54,6 +54,9 @@ Once the function is deployed configure API Gateway with a HTTP Proxy to call
 the Lambda Function. Refer to the API Gateway [developer guide][2] for more
 information.
 
+Reach me at [randompunter][3] on twitter.
+
 [0]: http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-create-api-as-simple-proxy.html
 [1]: https://www.nuget.org/packages/KatanaNetStandard/
 [2]: http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-create-api-as-simple-proxy.html
+[3]: https:twitter.com/randompunter
