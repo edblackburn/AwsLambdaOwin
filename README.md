@@ -22,7 +22,7 @@ In your OWIN application / library, add a class that extends
 `APIGatewayOwinProxyFunction` and implement the Init method.
 
 Here is an example implementation that uses [KatanaNetStandard](1) for the
-`OwinContext type
+`OwinContext` type
 
 ```
 namespace TestOwinApp
