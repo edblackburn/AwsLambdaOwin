@@ -61,9 +61,9 @@ Task("Pack")
 
     var settings = new DotNetCorePackSettings
     {
-        ArgumentCustomization = args => args
+        /*ArgumentCustomization = args => args
             .Append("--include-symbols")
-            .Append("--include-source"),
+            .Append("--include-source"),*/
         Configuration = "Release",
         OutputDirectory = "./artifacts/",
         VersionSuffix = packageVersion,
