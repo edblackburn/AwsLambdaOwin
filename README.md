@@ -59,4 +59,4 @@ Reach me at [randompunter][3] on twitter.
 [0]: http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-create-api-as-simple-proxy.html
 [1]: https://www.nuget.org/packages/KatanaNetStandard/
 [2]: http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-create-api-as-simple-proxy.html
-[3]: https:twitter.com/randompunter
+[3]: https://twitter.com/randompunter
