@@ -55,7 +55,7 @@
 
             await AppFunc(owinContext.Environment);
 
-            var response = MarshalResponse(owinContext.Response, lambdaContext.Logger);
+            var response = MarshalResponse(owinContext.Response);
 
             var responseStream = new MemoryStream();
             _serializer.Serialize(response, responseStream);
@@ -84,23 +84,26 @@
             }
 
             owinContext.Request.Path = new PathString(proxyRequest.Path);
+            
+            if(proxyRequest.QueryStringParameters != null){
 
-            var sb = new StringBuilder();
-            var encoder = UrlEncoder.Default;
-            foreach (var kvp in proxyRequest.QueryStringParameters)
-            {
-                if (sb.Length > 1)
+                var sb = new StringBuilder();
+                var encoder = UrlEncoder.Default;
+                foreach (var kvp in proxyRequest.QueryStringParameters)
                 {
-                    sb.Append("&");
+                    if (sb.Length > 1)
+                    {
+                        sb.Append("&");
+                    }
+                    sb.Append($"{encoder.Encode(kvp.Key)}={encoder.Encode(kvp.Value)}");
                 }
-                sb.Append($"{encoder.Encode(kvp.Key)}={encoder.Encode(kvp.Value)}");
+                owinContext.Request.QueryString = new QueryString(sb.ToString());
             }
-            owinContext.Request.QueryString = new QueryString(sb.ToString());
 
             owinContext.Response.Body = new MemoryStream();
         }
 
-        private APIGatewayProxyResponse MarshalResponse(IOwinResponse owinResponse, ILambdaLogger lambdaContextLogger)
+        private APIGatewayProxyResponse MarshalResponse(IOwinResponse owinResponse)
         {
             var response = new APIGatewayProxyResponse
             {

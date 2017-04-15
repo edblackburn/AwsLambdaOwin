@@ -10,13 +10,13 @@ namespace AwsLambdaOwin.Tests
     using Shouldly;
     using Xunit;
 
-    public class APIGatewayOwinProxyFunctionTests
+    public class APIGatewayOwinProxyFunctionThrowsTests
     {
-        private readonly TestOwinFunction _sut;
+        private readonly ThrowsOwinFunction _sut;
 
-        public APIGatewayOwinProxyFunctionTests()
+        public APIGatewayOwinProxyFunctionThrowsTests()
         {
-            _sut = new TestOwinFunction();
+            _sut = new ThrowsOwinFunction();
         }
 
         [Fact]
@@ -45,9 +45,7 @@ namespace AwsLambdaOwin.Tests
             };
             var response = await _sut.FunctionHandler(request, context);
 
-            response.StatusCode.ShouldBe(202);
-
-            AssetLastRequest();
+            response.StatusCode.ShouldBe(500);
         }
 
         [Fact]
@@ -67,18 +65,7 @@ namespace AwsLambdaOwin.Tests
 
             var response = await client.GetAsync("/path?a=1&b=2");
 
-            response.StatusCode.ShouldBe(HttpStatusCode.Accepted);
-
-            AssetLastRequest();
-        }
-
-        private void AssetLastRequest()
-        {
-            _sut.LastRequest.Request.Host.Value.ShouldBe("example.com");
-            _sut.LastRequest.Request.Path.Value.ShouldBe("/path");
-            _sut.LastRequest.Request.Accept.ShouldBe("application/json");
-            _sut.LastRequest.Request.Query["a"].ShouldBe("1");
-            _sut.LastRequest.Request.Query["b"].ShouldBe("2");
+            response.StatusCode.ShouldBe(HttpStatusCode.InternalServerError);
         }
     }
 }
