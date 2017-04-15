@@ -16,7 +16,11 @@ namespace AwsLambdaOwin.Tests
 
         public APIGatewayOwinProxyFunctionTests()
         {
-            _sut = new TestOwinFunction();
+            _sut = new TestOwinFunction
+            {
+                EnableRequestLogging = true,
+                EnableResponseLogging = true
+            };
         }
 
         [Fact]

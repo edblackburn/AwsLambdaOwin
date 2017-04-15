@@ -9,13 +9,16 @@ namespace AwsLambdaOwin.Tests
     using Amazon.Lambda.TestUtilities;
     using Shouldly;
     using Xunit;
+    using Xunit.Abstractions;
 
     public class APIGatewayOwinProxyFunctionThrowsTests
     {
+        private readonly ITestOutputHelper _testOutputHelper;
         private readonly ThrowsOwinFunction _sut;
 
-        public APIGatewayOwinProxyFunctionThrowsTests()
+        public APIGatewayOwinProxyFunctionThrowsTests(ITestOutputHelper testOutputHelper)
         {
+            _testOutputHelper = testOutputHelper;
             _sut = new ThrowsOwinFunction();
         }
 
@@ -43,9 +46,12 @@ namespace AwsLambdaOwin.Tests
                     { "b" , "2" }
                 }
             };
-            var response = await _sut.FunctionHandler(request, context);
 
-            response.StatusCode.ShouldBe(500);
+            Func<Task> act = async () => await _sut.FunctionHandler(request, context);
+
+            await act.ShouldThrowAsync<Exception>();
+
+            _testOutputHelper.WriteLine(((TestLambdaLogger)context.Logger).Buffer.ToString());
         }
 
         [Fact]
@@ -59,13 +65,10 @@ namespace AwsLambdaOwin.Tests
             {
                 BaseAddress = new Uri("https://example.com")
             };
-            client.DefaultRequestHeaders.Accept.ParseAdd("application/json");
-            client.DefaultRequestHeaders.AcceptEncoding.ParseAdd("gzip");
-            client.DefaultRequestHeaders.AcceptEncoding.ParseAdd("deflate");
 
-            var response = await client.GetAsync("/path?a=1&b=2");
+            Func<Task> act = async () => await client.GetAsync("/path");
 
-            response.StatusCode.ShouldBe(HttpStatusCode.InternalServerError);
+            await act.ShouldThrowAsync<Exception>();
         }
     }
 }

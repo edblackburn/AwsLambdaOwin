@@ -8,7 +8,6 @@ namespace Amazon.Lambda.TestUtilities
     using Amazon.Lambda.Serialization.Json;
     using AwsLambdaOwin;
 
-
     public static class ApiGatewayOwinProxyFunctionExtensions
     {
         public static async Task<APIGatewayProxyResponse> FunctionHandler(

@@ -1,5 +1,6 @@
 ﻿namespace AwsLambdaOwin
 {
+    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Text;
@@ -53,9 +54,22 @@
             var owinContext = new OwinContext();
             MarshalRequest(owinContext, proxyRequest);
 
-            await AppFunc(owinContext.Environment);
+            APIGatewayProxyResponse response;
+            try
+            {
+                await AppFunc(owinContext.Environment);
+                response = MarshalResponse(owinContext.Response);
+            }
+            catch (Exception ex)
+            {
+                var stringBuilder = new StringBuilder();
+                stringBuilder.AppendLine(
+                    $"Exception handling {proxyRequest.Path}");
+                stringBuilder.AppendLine(ex.ToString());
+                lambdaContext.Logger.Log(stringBuilder.ToString());
 
-            var response = MarshalResponse(owinContext.Response);
+                throw;
+            }
 
             var responseStream = new MemoryStream();
             _serializer.Serialize(response, responseStream);

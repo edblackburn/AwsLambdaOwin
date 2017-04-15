@@ -10,6 +10,12 @@ namespace AwsLambdaOwin.Tests
     {
         public OwinContext LastRequest;
 
+        public TestOwinFunction()
+        {
+            EnableRequestLogging = GetEnvironmentVariableBool("EnableRequestLogging");
+            EnableResponseLogging = GetEnvironmentVariableBool("EnableResponseLogging");
+        }
+
         protected override Func<IDictionary<string, object>, Task> Init()
         {
             return async env =>
@@ -21,15 +27,12 @@ namespace AwsLambdaOwin.Tests
                 LastRequest = context;
             };
         }
-    }
 
-    public class ThrowsOwinFunction : APIGatewayOwinProxyFunction
-    {
-        public OwinContext LastRequest;
-
-        protected override Func<IDictionary<string, object>, Task> Init()
+        private static bool GetEnvironmentVariableBool(string name)
         {
-            return env => throw new NotSupportedException();
+            var variable = Environment.GetEnvironmentVariable("EnableRequestLogging");
+            bool.TryParse(variable, out bool result);
+            return result;
         }
     }
 }
