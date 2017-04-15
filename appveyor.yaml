@@ -7,7 +7,7 @@ artifacts:
 - path: artifacts/*.nupkg
 deploy:
 - provider: NuGet
-  server: https://www.myget.org/F/dh/
+  server: https://www.myget.org/F/dh/api/v2/package
   api_key:
     secure: OFKHH+6tRCSObkKF0J5XsgygWyP0piFEoCtwQE99iPzMtoum+a6i6LWhdIEe26Q5
   on:
