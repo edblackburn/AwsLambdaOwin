@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AwsLambdaOwin", "AwsLambdaO
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AwsLambdaOwin.Tests", "AwsLambdaOwin.Tests\AwsLambdaOwin.Tests.csproj", "{73A01010-D321-41F5-AA31-87FFFE91EAA9}"
 EndProject
+Project("{300345B3-A7B4-4BEA-B3B3-F22F711F0DB8}") = "Sample", "Sample\Sample.csproj", "{27D4B29D-6AB3-477B-B5CD-0B715D3736A8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{73A01010-D321-41F5-AA31-87FFFE91EAA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{73A01010-D321-41F5-AA31-87FFFE91EAA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{73A01010-D321-41F5-AA31-87FFFE91EAA9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27D4B29D-6AB3-477B-B5CD-0B715D3736A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27D4B29D-6AB3-477B-B5CD-0B715D3736A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27D4B29D-6AB3-477B-B5CD-0B715D3736A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27D4B29D-6AB3-477B-B5CD-0B715D3736A8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
