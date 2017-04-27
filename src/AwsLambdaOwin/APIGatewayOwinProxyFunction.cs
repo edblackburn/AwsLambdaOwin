@@ -233,34 +233,41 @@
 
                 if (rcEncoding == ResponseContentEncoding.Base64)
                 {
-                    // We want to read the response content "raw" and then Base64 encode it
-                    byte[] bodyBytes;
-                    var body = owinResponse.Body as MemoryStream;
-                    if (body != null)
+                    var responseBody = owinResponse.Body as MemoryStream;
+                    if (responseBody != null)
                     {
-                        bodyBytes = body.ToArray();
+                        response.Body = responseBody.TryGetBuffer(out var buffer)
+                            ? Convert.ToBase64String(buffer.Array, buffer.Offset, buffer.Count)
+                            : Convert.ToBase64String(responseBody.ToArray());
                     }
                     else
                     {
                         using (var ms = _memoryStreamManager.GetStream())
                         {
                             owinResponse.Body.CopyTo(ms);
-                            bodyBytes = ms.ToArray();
+                            response.Body = ms.TryGetBuffer(out var buffer)
+                                ? Convert.ToBase64String(buffer.Array, buffer.Offset, buffer.Count)
+                                : Convert.ToBase64String(ms.ToArray());
                         }
                     }
-                    response.Body = Convert.ToBase64String(bodyBytes);
                     response.IsBase64Encoded = true;
-                }
-                else if (owinResponse.Body is MemoryStream)
-                {
-                    response.Body = Encoding.UTF8.GetString(((MemoryStream)owinResponse.Body).ToArray());
                 }
                 else
                 {
-                    owinResponse.Body.Position = 0;
-                    using (var reader = new StreamReader(owinResponse.Body, Encoding.UTF8))
+                    var body = owinResponse.Body as MemoryStream;
+                    if (body != null)
                     {
-                        response.Body = reader.ReadToEnd();
+                        response.Body = body.TryGetBuffer(out var buffer)
+                            ? Encoding.UTF8.GetString(buffer.Array, buffer.Offset, buffer.Count)
+                            : Encoding.UTF8.GetString(body.ToArray());
+                    }
+                    else
+                    {
+                        owinResponse.Body.Position = 0;
+                        using (var reader = new StreamReader(owinResponse.Body, Encoding.UTF8))
+                        {
+                            response.Body = reader.ReadToEnd();
+                        }
                     }
                 }
             }

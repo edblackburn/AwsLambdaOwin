@@ -85,6 +85,65 @@ namespace AwsLambdaOwin
         }
 
         [Fact]
+        public async Task ImageProxyRequestTestNonMemoryStream()
+        {
+            var context = new TestLambdaContext
+            {
+                FunctionName = "Owin"
+            };
+            var request = new APIGatewayProxyRequest
+            {
+                HttpMethod = "GET",
+                Body = "Hi",
+                Headers = new Dictionary<string, string>
+                {
+                    { "Accept", "application/json" },
+                    { "Accept-Encoding", "gzip,deflate" },
+                    { "Host", "example.com" }
+                },
+                Path = "/img_nomemorystream",
+                QueryStringParameters = new Dictionary<string, string>
+                {
+                    { "a" , "1" },
+                    { "b" , "2" }
+                }
+            };
+            var response = await _sut.FunctionHandler(request, context);
+
+            response.StatusCode.ShouldBe(200);
+            response.IsBase64Encoded.ShouldBeTrue();
+        }
+
+        [Fact]
+        public async Task TextProxyRequestTest_NonMemoryStream()
+        {
+            var context = new TestLambdaContext
+            {
+                FunctionName = "Owin"
+            };
+            var request = new APIGatewayProxyRequest
+            {
+                HttpMethod = "GET",
+                Headers = new Dictionary<string, string>
+                {
+                    { "Accept", "application/json" },
+                    { "Accept-Encoding", "gzip,deflate" },
+                    { "Host", "example.com" }
+                },
+                Path = "/text",
+                QueryStringParameters = new Dictionary<string, string>
+                {
+                    { "a" , "1" },
+                    { "b" , "2" }
+                }
+            };
+            var response = await _sut.FunctionHandler(request, context);
+
+            response.StatusCode.ShouldBe(200);
+            response.IsBase64Encoded.ShouldBeFalse();
+        }
+
+        [Fact]
         public async Task TextHttpClientTest()
         {
             var handler = new OwinHttpMessageHandler(_sut.AppFunc)
