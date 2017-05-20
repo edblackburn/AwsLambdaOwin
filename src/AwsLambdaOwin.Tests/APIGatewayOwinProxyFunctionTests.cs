@@ -1,4 +1,4 @@
-namespace AwsLambdaOwin.Tests
+namespace AwsLambdaOwin
 {
     using System;
     using System.Collections.Generic;
@@ -24,7 +24,7 @@ namespace AwsLambdaOwin.Tests
         }
 
         [Fact]
-        public async Task ProxyRequestTest()
+        public async Task TextProxyRequestTest()
         {
             var context = new TestLambdaContext
             {
@@ -55,7 +55,96 @@ namespace AwsLambdaOwin.Tests
         }
 
         [Fact]
-        public async Task HttpClientTest()
+        public async Task ImageProxyRequestTest()
+        {
+            var context = new TestLambdaContext
+            {
+                FunctionName = "Owin"
+            };
+            var request = new APIGatewayProxyRequest
+            {
+                HttpMethod = "GET",
+                Body = "Hi",
+                Headers = new Dictionary<string, string>
+                {
+                    { "Accept", "application/json" },
+                    { "Accept-Encoding", "gzip,deflate" },
+                    { "Host", "example.com" }
+                },
+                Path = "/img",
+                QueryStringParameters = new Dictionary<string, string>
+                {
+                    { "a" , "1" },
+                    { "b" , "2" }
+                }
+            };
+            var response = await _sut.FunctionHandler(request, context);
+
+            response.StatusCode.ShouldBe(200);
+            response.IsBase64Encoded.ShouldBeTrue();
+        }
+
+        [Fact]
+        public async Task ImageProxyRequestTestNonMemoryStream()
+        {
+            var context = new TestLambdaContext
+            {
+                FunctionName = "Owin"
+            };
+            var request = new APIGatewayProxyRequest
+            {
+                HttpMethod = "GET",
+                Body = "Hi",
+                Headers = new Dictionary<string, string>
+                {
+                    { "Accept", "application/json" },
+                    { "Accept-Encoding", "gzip,deflate" },
+                    { "Host", "example.com" }
+                },
+                Path = "/img_nomemorystream",
+                QueryStringParameters = new Dictionary<string, string>
+                {
+                    { "a" , "1" },
+                    { "b" , "2" }
+                }
+            };
+            var response = await _sut.FunctionHandler(request, context);
+
+            response.StatusCode.ShouldBe(200);
+            response.IsBase64Encoded.ShouldBeTrue();
+        }
+
+        [Fact]
+        public async Task TextProxyRequestTest_NonMemoryStream()
+        {
+            var context = new TestLambdaContext
+            {
+                FunctionName = "Owin"
+            };
+            var request = new APIGatewayProxyRequest
+            {
+                HttpMethod = "GET",
+                Headers = new Dictionary<string, string>
+                {
+                    { "Accept", "application/json" },
+                    { "Accept-Encoding", "gzip,deflate" },
+                    { "Host", "example.com" }
+                },
+                Path = "/text",
+                QueryStringParameters = new Dictionary<string, string>
+                {
+                    { "a" , "1" },
+                    { "b" , "2" }
+                }
+            };
+            var response = await _sut.FunctionHandler(request, context);
+
+            response.StatusCode.ShouldBe(200);
+            response.IsBase64Encoded.ShouldBeFalse();
+        }
+
+        [Fact]
+        public async Task TextHttpClientTest()
         {
             var handler = new OwinHttpMessageHandler(_sut.AppFunc)
             {
@@ -74,6 +163,28 @@ namespace AwsLambdaOwin.Tests
             response.StatusCode.ShouldBe(HttpStatusCode.Accepted);
 
             AssertLastRequest();
+        }
+
+        [Fact]
+        public async Task ImageHttpClientTest()
+        {
+            var handler = new OwinHttpMessageHandler(_sut.AppFunc)
+            {
+                UseCookies = true
+            };
+            var client = new HttpClient(handler)
+            {
+                BaseAddress = new Uri("https://example.com")
+            };
+            client.DefaultRequestHeaders.Accept.ParseAdd("application/json");
+            client.DefaultRequestHeaders.AcceptEncoding.ParseAdd("gzip");
+            client.DefaultRequestHeaders.AcceptEncoding.ParseAdd("deflate");
+
+            var response = await client.GetAsync("/img");
+
+            response.StatusCode.ShouldBe(HttpStatusCode.OK);
+
+            response.Content.Headers.ContentType.MediaType.ShouldBe("image/jpeg");
         }
 
         private void AssertLastRequest()
