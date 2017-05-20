@@ -1,4 +1,4 @@
-namespace AwsLambdaOwin.Tests
+namespace AwsLambdaOwin
 {
     using System;
     using System.Collections.Generic;

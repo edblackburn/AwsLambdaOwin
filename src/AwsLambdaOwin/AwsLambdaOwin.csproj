@@ -7,7 +7,7 @@
     <PackageProjectUrl>https://github.com/damianh/AwsLambdaOwin</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/damianh/AwsLambdaOwin/blob/master/LICENSE</PackageLicenseUrl>
     <PackageTags>AWS;Amazon;Lambda;owin</PackageTags>
-    <Description>Host OWIN application in lambda.</Description>
+    <Description>Host OWIN applications in lambda.</Description>
     <RepositoryUrl>https://github.com/damianh/AwsLambdaOwin</RepositoryUrl>
   </PropertyGroup>
 

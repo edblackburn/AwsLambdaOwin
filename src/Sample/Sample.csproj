@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+    <ApplicationIcon />
+    <OutputTypeEx>library</OutputTypeEx>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="doge.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AwsLambdaOwin\AwsLambdaOwin.csproj">
+      <Project>{75378493-e3f7-4c0e-9ee0-9da7cd0c8a84}</Project>
+      <Name>AwsLambdaOwin</Name>
+    </ProjectReference>
+    <DotNetCliToolReference Include="Amazon.Lambda.Tools" Version="1.4.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="doge.jpg" />
+  </ItemGroup>
+</Project>
